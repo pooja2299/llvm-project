@@ -657,12 +657,6 @@ Generic load. Expects a MachineMemOperand in addition to explicit
 operands. If the result size is larger than the memory size, the
 high bits are undefined, sign-extended, or zero-extended respectively.
 
-.. code-block:: none
-
-  %load:_(s64) = G_LOAD %ptr(p0) :: (load (s32)) ; High 32 bits are undefined.
-  %load:_(s64) = G_SEXTLOAD %ptr(p0) :: (load (s32)) ; High 32 bits are sign-extended.
-  %load:_(s64) = G_ZEXTLOAD %ptr(p0) :: (load (s32)) ; High 32 bits are zero-extended.
-
 Only G_LOAD is valid if the result is a vector type. If the result is larger
 than the memory size, the high elements are undefined (i.e. this is not a
 per-element, vector anyextload)
@@ -670,15 +664,9 @@ per-element, vector anyextload)
 G_INDEXED_LOAD
 ^^^^^^^^^^^^^^
 
-Generic indexed load opcode combines a G_PTR_ADD with a load. 
-
-.. code-block:: none
-
-  $val, $addr = G_INDEXED_LOAD $base, $offset, 1 (IsPre)   
-
-$addr is set to $base + $offset.
+Generic indexed load. Combines a GEP with a load. $newaddr is set to $base + $offset.
 If $am is 0 (post-indexed), then the value is loaded from $base; if $am is 1 (pre-indexed)
-then the value is loaded from $addr. 
+then the value is loaded from $newaddr.
 
 G_INDEXED_SEXTLOAD
 ^^^^^^^^^^^^^^^^^^
@@ -703,10 +691,6 @@ G_INDEXED_STORE
 ^^^^^^^^^^^^^^^
 
 Combines a store with a GEP. See description of G_INDEXED_LOAD for indexing behaviour.
-
-.. code:: none
-
-  $addr = G_INDEXED_STORE $val, $base, $offset 
 
 G_ATOMIC_CMPXCHG_WITH_SUCCESS
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
